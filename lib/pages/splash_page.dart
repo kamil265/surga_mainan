@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:surga_mainan/theme.dart';
+import 'package:surga_mainan/theme/dark_color.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({ Key key }) : super(key: key);
@@ -22,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor1,
+      backgroundColor: DarkColor.backgroundColor1,
       body: Center(
         child: Container(
           width: 130,
