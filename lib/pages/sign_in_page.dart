@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:surga_mainan/blocs/auth_bloc.dart';
-import 'package:surga_mainan/theme.dart';
+import 'package:surga_mainan/theme/dark_color.dart';
 
 class SignInPage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -43,9 +43,9 @@ class LoginForm extends StatelessWidget {
           children: [
             Text(
               'Login',
-              style: primaryTextStyle.copyWith(
+              style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 24,
-                fontWeight: semiBold,
+                fontWeight: textStyle.semiBold,
               ),
             ),
             SizedBox(
@@ -53,7 +53,7 @@ class LoginForm extends StatelessWidget {
             ),
             Text(
               'Silahkan Lengkapi Data untuk Melanjutkan',
-              style: subtitleTextStyle,
+              style: textStyle.subtitleTextStyle,
             ),
           ],
         ),
@@ -68,9 +68,9 @@ class LoginForm extends StatelessWidget {
           children: [
             Text(
               'Email',
-              style: primaryTextStyle.copyWith(
+              style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: medium,
+                fontWeight: textStyle.medium,
               ),
             ),
             SizedBox(
@@ -82,7 +82,7 @@ class LoginForm extends StatelessWidget {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: DarkColor.backgroundColor2,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
@@ -97,11 +97,11 @@ class LoginForm extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
-                        style: primaryTextStyle,
+                        style: textStyle.primaryTextStyle,
                         controller: emailController,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Masukkan Alamat Email',
-                          hintStyle: subtitleTextStyle,
+                          hintStyle: textStyle.subtitleTextStyle,
                         ),
                       ),
                     ),
@@ -122,9 +122,9 @@ class LoginForm extends StatelessWidget {
           children: [
             Text(
               'Password',
-              style: primaryTextStyle.copyWith(
+              style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: medium,
+                fontWeight: textStyle.medium,
               ),
             ),
             SizedBox(
@@ -136,7 +136,7 @@ class LoginForm extends StatelessWidget {
                 horizontal: 16,
               ),
               decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: DarkColor.backgroundColor2,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
@@ -151,12 +151,12 @@ class LoginForm extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextFormField(
-                        style: primaryTextStyle,
+                        style: textStyle.primaryTextStyle,
                         obscureText: true,
                         controller: passwordController,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Password',
-                          hintStyle: subtitleTextStyle,
+                          hintStyle: textStyle.subtitleTextStyle,
                         ),
                       ),
                     ),
@@ -179,16 +179,16 @@ class LoginForm extends StatelessWidget {
             _login();
           },
           style: TextButton.styleFrom(
-            backgroundColor: primaryColor,
+            backgroundColor: DarkColor.primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           child: Text(
             'Masuk',
-            style: primaryTextStyle.copyWith(
+            style: textStyle.primaryTextStyle.copyWith(
               fontSize: 16,
-              fontWeight: medium,
+              fontWeight: textStyle.medium,
             ),
           ),
         ),
@@ -224,12 +224,12 @@ class LoginForm extends StatelessWidget {
     //   );
     // }
     return Scaffold(
-      backgroundColor:backgroundColor1,
+      backgroundColor:DarkColor.backgroundColor1,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
+            horizontal: gridValue.margin,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

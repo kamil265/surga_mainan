@@ -70,13 +70,13 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {
-          '/':(context) => SplashPage(),
-          '/sign-in':(context) => SignInPage(),
-          '/shop-home':(context) => MainPage(),
-        }
+    return BlocProvider(
+      create: (context) => AuthBloc(),
+      child: MaterialApp(debugShowCheckedModeBanner: false, routes: {
+        '/': (context) => SplashPage(),
+        '/sign-in': (context) => SignInPage(),
+        '/shop-home': (context) => MainPage(),
+      }),
     );
   }
 }

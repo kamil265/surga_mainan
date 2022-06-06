@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:surga_mainan/pages/shop_home/home_page.dart';
 import 'package:surga_mainan/pages/shop_home/profile_page.dart';
-import 'package:surga_mainan/theme.dart';
+import 'package:surga_mainan/theme/dark_color.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({ Key key }) : super(key: key);
@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
         onPressed: () {
           Navigator.pushNamed(context, '/cart');
         },
-        backgroundColor: secondaryColor,
+        backgroundColor: DarkColor.backgroundColor1,
         child: Image.asset(
           'assets/icon_cart.png',
           width: 20,
@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
           notchMargin: 12,
           clipBehavior: Clip.antiAlias,
           child: BottomNavigationBar(
-            backgroundColor: backgroundColor4,
+            backgroundColor: DarkColor.backgroundColor2,
             currentIndex: currentIndex,
             onTap: (value) {
               print(value);
@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
                   child: Image.asset(
                     'assets/icon_home.png',
                     width: 21,
-                    color: currentIndex == 0 ? primaryColor : Color(0xff808191),
+                    color: currentIndex == 0 ? DarkColor.primaryColor : Color(0xff808191),
                   ),
                 ),
                 label: '',
@@ -72,7 +72,7 @@ class _MainPageState extends State<MainPage> {
                   child: Image.asset(
                     'assets/icon_profile.png',
                     width: 20,
-                    color: currentIndex == 1 ? primaryColor : Color(0xff808191),
+                    color: currentIndex == 1 ? DarkColor.primaryColor : Color(0xff808191),
 
                   ),
                 ),
@@ -99,7 +99,7 @@ class _MainPageState extends State<MainPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor1,
+      backgroundColor: DarkColor.backgroundColor1,
       floatingActionButton: cartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customBottomNav(),

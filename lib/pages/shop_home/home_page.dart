@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:surga_mainan/blocs/auth_bloc.dart';
 import 'package:surga_mainan/services/auth_services.dart';
-import 'package:surga_mainan/theme.dart';
+import 'package:surga_mainan/theme/dark_color.dart';
 
 class HomePage extends StatefulWidget {
   final AuthBloc authBloc;
@@ -29,9 +29,9 @@ class _HomePageState extends State<HomePage> {
           if (state is AuthData) {
           return Container(
             margin: EdgeInsets.only(
-              top: defaultMargin,
-              left: defaultMargin,
-              right: defaultMargin,
+              top: defaultMargin().margin,
+              left: defaultMargin().margin,
+              right: defaultMargin().margin,
             ),
             child: Row(
               children: [
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         'Hallo,' + state.name,
-                        style: primaryTextStyle.copyWith(
+                        style: DarkColor.primaryTextStyle.copyWith(
                           fontSize: 24,
                           fontWeight: semiBold,
                         ),

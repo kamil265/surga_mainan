@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:surga_mainan/theme.dart';
+import 'package:surga_mainan/theme/dark_color.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -7,13 +7,13 @@ class ProfilePage extends StatelessWidget {
     
     Widget header() {
       return AppBar(
-        backgroundColor: backgroundColor1,
+        backgroundColor: DarkColor.backgroundColor1,
         automaticallyImplyLeading: false,
         elevation: 0,
         flexibleSpace: SafeArea(
           child: Container(
             padding: EdgeInsets.all(
-              defaultMargin,
+              gridValue.margin,
             ),
             child: Row(
               children: [
@@ -32,14 +32,14 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Text(
                         'Hallo, Kamil',
-                        style: primaryTextStyle.copyWith(
+                        style: textStyle.primaryTextStyle.copyWith(
                           fontSize: 24,
-                          fontWeight: semiBold,
+                          fontWeight: textStyle.semiBold,
                         ),
                       ),
                       Text(
                         'Admin',
-                        style: subtitleTextStyle.copyWith(
+                        style: textStyle.subtitleTextStyle.copyWith(
                           fontSize: 16,
                         ),
                       ),
@@ -71,11 +71,11 @@ class ProfilePage extends StatelessWidget {
           children: [
             Text(
               text,
-              style: secondaryTextStyle.copyWith(fontSize: 13),
+              style: textStyle.secondaryTextStyle.copyWith(fontSize: 13),
             ),
             Icon(
               Icons.chevron_right,
-              color: primaryTextColor,
+              color: DarkColor.primaryTextColor,
             ),
           ],
         ),
@@ -87,10 +87,10 @@ class ProfilePage extends StatelessWidget {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
+            horizontal: gridValue.margin,
           ),
           decoration: BoxDecoration(
-            color: backgroundColor3,
+            color: DarkColor.backgroundColor1,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,9 +100,9 @@ class ProfilePage extends StatelessWidget {
               ),
               Text(
                 'Account',
-                style: primaryTextStyle.copyWith(
+                style: textStyle.primaryTextStyle.copyWith(
                   fontSize: 16,
-                  fontWeight: semiBold,
+                  fontWeight: textStyle.semiBold,
                 ),
               ),
               GestureDetector(
@@ -124,9 +124,9 @@ class ProfilePage extends StatelessWidget {
               ),
               Text(
                 'General',
-                style: primaryTextStyle.copyWith(
+                style: textStyle.primaryTextStyle.copyWith(
                   fontSize: 16,
-                  fontWeight: semiBold,
+                  fontWeight: textStyle.semiBold,
                 ),
               ),
               menuItem(
