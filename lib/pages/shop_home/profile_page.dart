@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
         flexibleSpace: SafeArea(
           child: Container(
             padding: EdgeInsets.all(
-              gridValue.margin,
+              defaultMargin,
             ),
             child: Row(
               children: [
@@ -87,7 +87,7 @@ class ProfilePage extends StatelessWidget {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
-            horizontal: gridValue.margin,
+            horizontal: defaultMargin,
           ),
           decoration: BoxDecoration(
             color: DarkColor.backgroundColor1,

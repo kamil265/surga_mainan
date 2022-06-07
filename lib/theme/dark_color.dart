@@ -15,6 +15,7 @@ class DarkColor {
   static const Color subtitleColor = Color(0xff504F5E);
   static const Color transparentColor = Colors.transparent;
   static const Color blackColor = Color(0xff2E2E2E);
+   static const Color iconColor = Color(0xffa8a09b);
   static const Color titleTextColor = const Color(0xff1d2635);
   static const Color subTitleTextColor = const Color(0xff797878);
 }
@@ -66,7 +67,7 @@ class textStyle {
 }
   
 class gridValue{
-  static double margin = 30.0;
+
   static List<BoxShadow> shadow = <BoxShadow>[
     BoxShadow(color: Color(0xfff8f8f8), blurRadius: 10, spreadRadius: 15),
   ];
@@ -86,3 +87,5 @@ class gridValue{
   }
 
 }
+
+ double defaultMargin = 30.0;

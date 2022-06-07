@@ -176,7 +176,7 @@ class LoginForm extends StatelessWidget {
         margin: EdgeInsets.only(top: 30),
         child: TextButton(
           onPressed:(){
-            _login();
+            Navigator.pushNamed(context, '/shop-home');
           },
           style: TextButton.styleFrom(
             backgroundColor: DarkColor.primaryColor,
@@ -229,7 +229,7 @@ class LoginForm extends StatelessWidget {
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(
-            horizontal: gridValue.margin,
+            horizontal: defaultMargin,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,13 +245,5 @@ class LoginForm extends StatelessWidget {
         ),
       )
     );
-  }
-
-  void _login() {
-    authBloc.add(LoginProcess(
-      email: emailController.text,
-      password: passwordController.text,
-    ));
-  }
-  
+  }  
 }

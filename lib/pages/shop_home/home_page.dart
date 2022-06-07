@@ -5,33 +5,21 @@ import 'package:surga_mainan/services/auth_services.dart';
 import 'package:surga_mainan/theme/dark_color.dart';
 
 class HomePage extends StatefulWidget {
-  final AuthBloc authBloc;
-  const HomePage({Key key, this.authBloc}) : super(key: key);
+  const HomePage({Key key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final AuthServices authServices = AuthServices();
-  AuthBloc get _authBloc => widget.authBloc;
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return BlocBuilder<AuthBloc, AuthState>(
-        bloc: _authBloc,
-        builder: (context, state) {
-          if (state is AuthHasToken) 
-          {
-              _authBloc.add(GetDataWithToken(state.token));
-              return Container();
-          }
-          if (state is AuthData) {
           return Container(
             margin: EdgeInsets.only(
-              top: defaultMargin().margin,
-              left: defaultMargin().margin,
-              right: defaultMargin().margin,
+              top: defaultMargin,
+              left: defaultMargin,
+              right: defaultMargin,
             ),
             child: Row(
               children: [
@@ -40,15 +28,15 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hallo,' + state.name,
-                        style: DarkColor.primaryTextStyle.copyWith(
+                        'Hai,',
+                        style: textStyle.primaryTextStyle.copyWith(
                           fontSize: 24,
-                          fontWeight: semiBold,
+                          fontWeight: textStyle.semiBold,
                         ),
                       ),
                       Text(
-                        state.email,
-                        style: subtitleTextStyle.copyWith(
+                        "Email",
+                        style: textStyle.subtitleTextStyle.copyWith(
                           fontSize: 16,
                         ),
                       ),
@@ -70,9 +58,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           );
-        }
-        },
-      );
     }
 
     Widget categories() {
@@ -95,13 +80,13 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.only(right: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: primaryColor,
+                  color: DarkColor.primaryColor,
                 ),
                 child: Text(
                   'Semua',
-                  style: primaryTextStyle.copyWith(
+                  style: textStyle.primaryTextStyle.copyWith(
                     fontSize: 13,
-                    fontWeight: medium,
+                    fontWeight: textStyle.medium,
                   ),
                 ),
               ),
@@ -114,15 +99,15 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: subtitleColor,
+                    color: DarkColor.subtitleColor,
                   ),
-                  color: transparentColor,
+                  color: DarkColor.transparentColor,
                 ),
                 child: Text(
                   'PT Putra Terang Agung',
-                  style: subtitleTextStyle.copyWith(
+                  style: textStyle.subtitleTextStyle.copyWith(
                     fontSize: 13,
-                    fontWeight: medium,
+                    fontWeight: textStyle.medium,
                   ),
                 ),
               ),
@@ -135,15 +120,15 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: subtitleColor,
+                    color: DarkColor.subtitleColor,
                   ),
-                  color: transparentColor,
+                  color: DarkColor.transparentColor,
                 ),
                 child: Text(
                   'Terang Agung',
-                  style: subtitleTextStyle.copyWith(
+                  style: textStyle.subtitleTextStyle.copyWith(
                     fontSize: 13,
-                    fontWeight: medium,
+                    fontWeight: textStyle.medium,
                   ),
                 ),
               ),
@@ -162,9 +147,9 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Text(
           'Kategori Produk',
-          style: primaryTextStyle.copyWith(
+          style: textStyle.primaryTextStyle.copyWith(
             fontSize: 22,
-            fontWeight: semiBold,
+            fontWeight: textStyle.semiBold,
           ),
         ),
       );
@@ -180,24 +165,12 @@ class _HomePageState extends State<HomePage> {
     //     ),
     //   );
     // }
-
-    return BlocBuilder<AuthBloc, AuthState>(
-        bloc: _authBloc,
-        builder: (context, state) {
-          if (state is AuthHasToken) {
-            _authBloc.add(GetDataWithToken(state.token));
-            return Container();
-          }
-          if (state is AuthData) {
-            return ListView(
-              children: [
-                header(),
-                categories(),
-                catProductsTitle(),
-                // catProducts()
-              ],
-            );
-          }
-        });
+    return ListView(
+      children: [
+        header(),
+        categories(),
+        catProductsTitle(),
+      ],
+    );
   }
 }

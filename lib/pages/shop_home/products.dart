@@ -5,14 +5,14 @@ import 'package:surga_mainan/theme/theme.dart';
 
 import '../../theme/dark_color.dart';
 
-class Category extends StatefulWidget {
-  const Category({Key key}) : super(key: key);
+class Product extends StatefulWidget {
+  const Product({Key key}) : super(key: key);
 
   @override
-  State<Category> createState() => _CategoryState();
+  State<Product> createState() => _ProductState();
 }
 
-class _CategoryState extends State<Category> {
+class _ProductState extends State<Product> {
   @override
   Widget _search() {
     return Container(

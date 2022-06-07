@@ -1,109 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:surga_mainan/pages/shop_home/categories.dart';
 import 'package:surga_mainan/pages/shop_home/home_page.dart';
+import 'package:surga_mainan/pages/shop_home/products.dart';
 import 'package:surga_mainan/pages/shop_home/profile_page.dart';
 import 'package:surga_mainan/theme/dark_color.dart';
+import 'package:surga_mainan/theme/theme.dart';
+import 'package:surga_mainan/widgets/BottomNavigationBar/bottom_navigation_bar.dart';
+import 'package:surga_mainan/widgets/extentions.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({ Key key }) : super(key: key);
+  MainPage({Key key, this.title}) : super(key: key);
+
+  final String title;
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
+  bool isCategoriesSelected = true;
+  
+  Widget _icon(IconData icon, {Color color = DarkColor.iconColor}) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(13)),
+          color: Theme.of(context).backgroundColor,
+          boxShadow: AppTheme.shadow),
+      child: Icon(
+        icon,
+        color: color,
+      ),
+    ).ripple(() {}, borderRadius: BorderRadius.all(Radius.circular(13)));
+  }
 
-  int currentIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget cartButton() {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/cart');
-        },
-        backgroundColor: DarkColor.backgroundColor1,
-        child: Image.asset(
-          'assets/icon_cart.png',
-          width: 20,
-        ),
-      );
-    }
-
-    Widget customBottomNav() {
-      return ClipRRect(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(30),
-        ),
-        child: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 12,
-          clipBehavior: Clip.antiAlias,
-          child: BottomNavigationBar(
-            backgroundColor: DarkColor.backgroundColor2,
-            currentIndex: currentIndex,
-            onTap: (value) {
-              print(value);
-              setState(() {
-                currentIndex=value;
-              });
-            },
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(
-                    top: 20,
-                    bottom: 10,
-                  ),
-                  child: Image.asset(
-                    'assets/icon_home.png',
-                    width: 21,
-                    color: currentIndex == 0 ? DarkColor.primaryColor : Color(0xff808191),
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(
-                    top: 20,
-                    bottom: 10,
-                  ),
-                  child: Image.asset(
-                    'assets/icon_profile.png',
-                    width: 20,
-                    color: currentIndex == 1 ? DarkColor.primaryColor : Color(0xff808191),
-
-                  ),
-                ),
-                label: '',
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-     Widget body() {
-      switch (currentIndex) {
+  Widget onBottomIconPressed(int index) {
+      switch (index) {
         case 0:
           return HomePage();
           break;
         case 1:
-          return ProfilePage();
+          return Product();
+          break;
+        case 2:
+          return Categories() ;
           break;
 
         default:
           return HomePage();
       }
     }
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DarkColor.backgroundColor1,
-      floatingActionButton: cartButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: customBottomNav(),
-      body: body(),
+      body: SafeArea(
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            SingleChildScrollView(
+              child: Container(
+                height: AppTheme.fullHeight(context) - 50,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xfffbfbfb),
+                      Color(0xfff7f7f7),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: AnimatedSwitcher(
+                        duration: Duration(milliseconds: 300),
+                        switchInCurve: Curves.easeInToLinear,
+                        switchOutCurve: Curves.easeOutBack,
+                        child: isCategoriesSelected
+                            ? Categories()
+                            : Align(
+                                alignment: Alignment.topCenter,
+                                child: ProfilePage(),
+                              ),
+                      ),
+                    ),
+                            ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: CustomBottomNavigationBar(
+                onIconPresedCallback: onBottomIconPressed,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
