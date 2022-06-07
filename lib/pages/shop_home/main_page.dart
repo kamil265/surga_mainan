@@ -1,105 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:surga_mainan/pages/shop_home/categories.dart';
 import 'package:surga_mainan/pages/shop_home/home_page.dart';
+import 'package:surga_mainan/pages/shop_home/order_page.dart';
 import 'package:surga_mainan/pages/shop_home/products.dart';
-import 'package:surga_mainan/pages/shop_home/profile_page.dart';
+import 'package:surga_mainan/pages/profile_page.dart';
+import 'package:surga_mainan/pages/shop_home/tags.dart';
 import 'package:surga_mainan/theme/dark_color.dart';
-import 'package:surga_mainan/theme/theme.dart';
-import 'package:surga_mainan/widgets/BottomNavigationBar/bottom_navigation_bar.dart';
-import 'package:surga_mainan/widgets/extentions.dart';
+import 'package:surga_mainan/widgets/custom_bottom_bar.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.title}) : super(key: key);
-
-  final String title;
 
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  bool isCategoriesSelected = true;
-  
-  Widget _icon(IconData icon, {Color color = DarkColor.iconColor}) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(13)),
-          color: Theme.of(context).backgroundColor,
-          boxShadow: AppTheme.shadow),
-      child: Icon(
-        icon,
-        color: color,
-      ),
-    ).ripple(() {}, borderRadius: BorderRadius.all(Radius.circular(13)));
-  }
+  int _currentIndex = 0;
 
-  Widget onBottomIconPressed(int index) {
-      switch (index) {
-        case 0:
-          return HomePage();
-          break;
-        case 1:
-          return Product();
-          break;
-        case 2:
-          return Categories() ;
-          break;
-
-        default:
-          return HomePage();
-      }
-    }
+  final _inactiveColor = Colors.grey;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            SingleChildScrollView(
-              child: Container(
-                height: AppTheme.fullHeight(context) - 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xfffbfbfb),
-                      Color(0xfff7f7f7),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 300),
-                        switchInCurve: Curves.easeInToLinear,
-                        switchOutCurve: Curves.easeOutBack,
-                        child: isCategoriesSelected
-                            ? Categories()
-                            : Align(
-                                alignment: Alignment.topCenter,
-                                child: ProfilePage(),
-                              ),
-                      ),
-                    ),
-                            ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: CustomBottomNavigationBar(
-                onIconPresedCallback: onBottomIconPressed,
-              ),
-            )
-          ],
-        ),
-      ),
+        body: getBody(),
+        bottomNavigationBar: _buildBottomBar()
     );
   }
+
+  Widget _buildBottomBar(){
+    return CustomAnimatedBottomBar(
+      containerHeight: 70,
+      backgroundColor: Colors.black,
+      selectedIndex: _currentIndex,
+      showElevation: true,
+      itemCornerRadius: 24,
+      curve: Curves.easeIn,
+      onItemSelected: (index) => setState(() => _currentIndex = index),
+      items: <BottomNavyBarItem>[
+        BottomNavyBarItem(
+          icon: Icon(FontAwesomeIcons.home),
+          title: Text('Home'),
+          activeColor: DarkColor.primaryColor,
+          inactiveColor: _inactiveColor,
+          textAlign: TextAlign.center,
+        ),
+        BottomNavyBarItem(
+          icon: Icon(FontAwesomeIcons.tags),
+          title: Text(
+            'Tags',
+            style: GoogleFonts.montserrat(
+              fontSize: 12,
+              fontWeight: FontWeight.bold
+            ) ,
+            ),
+          activeColor: DarkColor.primaryColor,
+          inactiveColor: _inactiveColor,
+          textAlign: TextAlign.center,
+        ),
+        BottomNavyBarItem(
+          icon: Icon(FontAwesomeIcons.boxes),
+          title: Text(
+            'Categories',
+            style: GoogleFonts.montserrat(
+              fontSize: 12,
+              fontWeight: FontWeight.bold
+            ) ,
+            ),
+          activeColor: DarkColor.primaryColor,
+          inactiveColor: _inactiveColor,
+          textAlign: TextAlign.center,
+        ),
+        BottomNavyBarItem(
+          icon: Icon(FontAwesomeIcons.box),
+          title: Text(
+            'Products',
+            style: GoogleFonts.montserrat(
+              fontSize: 12,
+              fontWeight: FontWeight.bold
+            ) ,
+            ),
+          activeColor: DarkColor.primaryColor,
+          inactiveColor: _inactiveColor,
+          textAlign: TextAlign.center,
+        ),
+        BottomNavyBarItem(
+          icon: Icon(FontAwesomeIcons.cartShopping),
+          title: Text(
+            'Orders',
+            style: GoogleFonts.montserrat(
+              fontSize: 12,
+              fontWeight: FontWeight.bold
+            ) ,
+            ),
+          activeColor: DarkColor.primaryColor,
+          inactiveColor: _inactiveColor,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+
+  Widget getBody() {
+    List<Widget> pages = [
+      HomePage(),
+      Tags(),
+      Categories(),
+      Products(),
+      Orders(),
+    ];
+    return IndexedStack(
+      index: _currentIndex,
+      children: pages,
+    );
+  }
+
+
 }

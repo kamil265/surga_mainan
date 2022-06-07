@@ -165,12 +165,15 @@ class _HomePageState extends State<HomePage> {
     //     ),
     //   );
     // }
-    return ListView(
-      children: [
-        header(),
-        categories(),
-        catProductsTitle(),
-      ],
+    return Container(
+      color: DarkColor.backgroundColor1,
+      child: ListView(
+        children: [
+          header(),
+          categories(),
+          catProductsTitle(),
+        ],
+      ),
     );
   }
 }

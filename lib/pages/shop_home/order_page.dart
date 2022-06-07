@@ -7,14 +7,14 @@ import 'package:surga_mainan/theme/dark_color.dart';
 import 'package:surga_mainan/theme/theme.dart';
 import 'package:surga_mainan/widgets/extentions.dart';
 
-class Categories extends StatefulWidget {
-  const Categories({Key key}) : super(key: key);
+class Orders extends StatefulWidget {
+  const Orders({Key key}) : super(key: key);
 
   @override
-  State<Categories> createState() => _CategoriesState();
+  State<Orders> createState() => _OrdersState();
 }
 
-class _CategoriesState extends State<Categories> {
+class _OrdersState extends State<Orders> {
   @override
   Widget build(BuildContext context) {
     Widget header() {
@@ -38,9 +38,10 @@ class _CategoriesState extends State<Categories> {
                         ),
                       ),
                       Text(
-                        "Categories",
+                        "Orders",
                         style: textStyle.primaryTextStyle.copyWith(
                           fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -69,7 +70,7 @@ class _CategoriesState extends State<Categories> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(13)),
           color: DarkColor.backgroundColor2,
-         ),
+          ),
       child: Icon(
         icon,
         color: color,
