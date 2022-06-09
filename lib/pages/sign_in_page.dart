@@ -1,37 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:surga_mainan/blocs/auth_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:surga_mainan/pages/shop_home/main_page.dart';
+import 'package:surga_mainan/services/token_services.dart';
+import 'package:surga_mainan/theme/theme.dart';
 import 'package:surga_mainan/theme/dark_color.dart';
 
-class SignInPage extends StatefulWidget {
-  final AuthBloc authBloc;
-  const SignInPage({Key key, this.authBloc}) : super(key: key);
 
+class SignInPage extends StatefulWidget {
+  const SignInPage({ Key key }) : super(key: key);
 
   @override
   _SignInPageState createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
-   AuthBloc get _authBloc => widget.authBloc;
+  bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _secureText = true;
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _authBloc,
-      child: LoginForm(
-        authBloc: _authBloc,
-      ),
-    );
+  showHide(){
+    setState(() {
+      _secureText = !_secureText;
+    });
   }
-}
 
-class LoginForm extends StatelessWidget {
-  final AuthBloc authBloc;
-  LoginForm({Key key, this.authBloc}) : super(key: key);
+  _showMsg(msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   TextEditingController emailController = TextEditingController(text: '');
   TextEditingController passwordController = TextEditingController(text: '');
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +50,7 @@ class LoginForm extends StatelessWidget {
               'Login',
               style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 24,
-                fontWeight: textStyle.semiBold,
+                fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(
@@ -70,7 +75,7 @@ class LoginForm extends StatelessWidget {
               'Email',
               style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: textStyle.medium,
+                fontWeight: FontWeight.normal,
               ),
             ),
             SizedBox(
@@ -124,7 +129,7 @@ class LoginForm extends StatelessWidget {
               'Password',
               style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: textStyle.medium,
+                fontWeight: FontWeight.normal,
               ),
             ),
             SizedBox(
@@ -175,8 +180,8 @@ class LoginForm extends StatelessWidget {
         width: double.infinity,
         margin: EdgeInsets.only(top: 30),
         child: TextButton(
-          onPressed:(){
-            Navigator.pushNamed(context, '/shop-home');
+          onPressed:() {
+            
           },
           style: TextButton.styleFrom(
             backgroundColor: DarkColor.primaryColor,
@@ -188,7 +193,7 @@ class LoginForm extends StatelessWidget {
             'Masuk',
             style: textStyle.primaryTextStyle.copyWith(
               fontSize: 16,
-              fontWeight: textStyle.medium,
+              fontWeight: FontWeight.normal,
             ),
           ),
         ),
@@ -203,7 +208,7 @@ class LoginForm extends StatelessWidget {
     //       children: [
     //         Text(
     //           'Belum Punya Akun? ',
-    //           style: subtitleTextStyle.copyWith(
+    //           style: textStyle.subtitleTextStyle.copyWith(
     //             fontSize: 12,
     //           ),
     //         ),
@@ -213,7 +218,7 @@ class LoginForm extends StatelessWidget {
     //           },
     //           child: Text(
     //             'Daftar Sekarang',
-    //             style: purpleTextStyle.copyWith(
+    //             style: textStyle.purpleTextStyle.copyWith(
     //               fontSize: 12,
     //               fontWeight: medium,
     //             ),
@@ -239,11 +244,42 @@ class LoginForm extends StatelessWidget {
               passwordInput(),
               signInButton(),
               Spacer(),
-              // footer(),
             ],
           ),
         ),
       )
     );
-  }  
+  }
+  void _login() async{
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {
+      'email' : emailController,
+      'password' : passwordController
+    };
+
+    var res = await TokenServices.auth(data, '/token');
+    var body = json.decode(res.body);
+    if(body['success']){
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', json.encode(body['token']));
+      localStorage.setString('user', json.encode(body['user']));
+      Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => MainPage()
+          ),
+      );
+    }else{
+      _showMsg(body['message']);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 }
+
+
+  

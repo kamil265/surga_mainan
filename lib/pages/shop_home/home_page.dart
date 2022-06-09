@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:surga_mainan/blocs/auth_bloc.dart';
-import 'package:surga_mainan/services/auth_services.dart';
+import 'package:surga_mainan/services/token_services.dart';
 import 'package:surga_mainan/theme/dark_color.dart';
 
 class HomePage extends StatefulWidget {
