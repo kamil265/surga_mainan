@@ -1,48 +1,96 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:surga_mainan/pages/shop_home/main_page.dart';
-import 'package:surga_mainan/services/token_services.dart';
-import 'package:surga_mainan/theme/theme.dart';
+import 'package:surga_mainan/providers/token_provider.dart';
 import 'package:surga_mainan/theme/dark_color.dart';
-
+import 'package:surga_mainan/widgets/loading_button.dart';
+import 'package:surga_mainan/widgets/primary_button.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({ Key key }) : super(key: key);
+  const SignInPage({Key key}) : super(key: key);
 
   @override
-  _SignInPageState createState() => _SignInPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
-  bool _isLoading = false;
+  // form key
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _secureText = true;
-
-  showHide(){
-    setState(() {
-      _secureText = !_secureText;
-    });
-  }
-
-  _showMsg(msg) {
-    final snackBar = SnackBar(
-      content: Text(msg),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
 
   TextEditingController emailController = TextEditingController(text: '');
   TextEditingController passwordController = TextEditingController(text: '');
 
+  bool isLoading = false;
+
+  bool _isHidden = true;
+
+  void _toggleVisibility() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    TokenProvider tokenProvider = Provider.of<TokenProvider>(context);
+    handleSignIn() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await tokenProvider.login(
+        email: emailController.text,
+        password: passwordController.text,
+      )) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: DarkColor.secondaryColor,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8.0),
+                topRight: Radius.circular(8.0),
+              ),
+            ),
+            content: Text(
+              'Selamat Datang',
+              style: textStyle.primaryTextStyle.copyWith(
+                fontSize: 12.0,
+                fontWeight: FontWeight.normal,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/home', (Route<dynamic> route) => true);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: DarkColor.alertColor,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8.0),
+                topRight: Radius.circular(8.0),
+              ),
+            ),
+            content: Text(
+              'Login Gagal',
+              style: textStyle.primaryTextStyle.copyWith(
+                fontSize: 12.0,
+                fontWeight: FontWeight.normal,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     Widget header() {
       return Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: EdgeInsets.only(top: defaultMargin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,13 +101,10 @@ class _SignInPageState extends State<SignInPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
-              height: 2,
+            const SizedBox(
+              height: 2.0,
             ),
-            Text(
-              'Silahkan Lengkapi Data untuk Melanjutkan',
-              style: textStyle.subtitleTextStyle,
-            ),
+            Text('Sign In to Countinue', style: textStyle.subtitleTextStyle)
           ],
         ),
       );
@@ -67,24 +112,24 @@ class _SignInPageState extends State<SignInPage> {
 
     Widget emailInput() {
       return Container(
-        margin: EdgeInsets.only(top: 70),
+        margin: const EdgeInsets.only(top: 70.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Email',
+              'Email Address',
               style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.normal,
+                fontWeight: FontWeight.normal, //medium
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Container(
               height: 50,
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
               ),
               decoration: BoxDecoration(
                 color: DarkColor.backgroundColor2,
@@ -97,16 +142,23 @@ class _SignInPageState extends State<SignInPage> {
                       'assets/icon_email.png',
                       width: 17,
                     ),
-                    SizedBox(
-                      width: 16,
+                    const SizedBox(
+                      width: 16.0,
                     ),
                     Expanded(
                       child: TextFormField(
-                        style: textStyle.primaryTextStyle,
                         controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        style: textStyle.primaryTextStyle.copyWith(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.normal,
+                        ),
                         decoration: InputDecoration.collapsed(
-                          hintText: 'Masukkan Alamat Email',
-                          hintStyle: textStyle.subtitleTextStyle,
+                          hintText: 'Your Email Address',
+                          hintStyle: textStyle.subtitleTextStyle.copyWith(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
                     ),
@@ -121,7 +173,7 @@ class _SignInPageState extends State<SignInPage> {
 
     Widget passwordInput() {
       return Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -129,16 +181,16 @@ class _SignInPageState extends State<SignInPage> {
               'Password',
               style: textStyle.primaryTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.normal,
+                fontWeight: FontWeight.normal, //medium
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Container(
               height: 50,
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
               ),
               decoration: BoxDecoration(
                 color: DarkColor.backgroundColor2,
@@ -151,18 +203,39 @@ class _SignInPageState extends State<SignInPage> {
                       'assets/icon_password.png',
                       width: 17,
                     ),
-                    SizedBox(
-                      width: 16,
+                    const SizedBox(
+                      width: 16.0,
                     ),
                     Expanded(
                       child: TextFormField(
-                        style: textStyle.primaryTextStyle,
-                        obscureText: true,
                         controller: passwordController,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Password',
-                          hintStyle: textStyle.subtitleTextStyle,
+                        obscureText: _isHidden,
+                        style: textStyle.primaryTextStyle.copyWith(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.normal,
                         ),
+                        decoration: InputDecoration.collapsed(
+                          hintText: 'Your Password',
+                          hintStyle: textStyle.subtitleTextStyle.copyWith(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12.0,
+                    ),
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: _toggleVisibility,
+                      child: Icon(
+                        _isHidden
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
+                        size: 22.0,
+                        color: _isHidden ? DarkColor.subtitleColor : DarkColor.primaryColor,
                       ),
                     ),
                   ],
@@ -174,112 +247,43 @@ class _SignInPageState extends State<SignInPage> {
       );
     }
 
-    Widget signInButton() {
-      return Container(
-        height: 50,
-        width: double.infinity,
-        margin: EdgeInsets.only(top: 30),
-        child: TextButton(
-          onPressed:() {
-            
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: DarkColor.primaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: Text(
-            'Masuk',
-            style: textStyle.primaryTextStyle.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-        ),
-      );
-    }
-
-    // Widget footer() {
-    //   return Container(
-    //     margin: EdgeInsets.only(bottom: 30),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         Text(
-    //           'Belum Punya Akun? ',
-    //           style: textStyle.subtitleTextStyle.copyWith(
-    //             fontSize: 12,
-    //           ),
-    //         ),
-    //         GestureDetector(
-    //           onTap: () {
-    //             Navigator.pushNamed(context, '/sign-up');
-    //           },
-    //           child: Text(
-    //             'Daftar Sekarang',
-    //             style: textStyle.purpleTextStyle.copyWith(
-    //               fontSize: 12,
-    //               fontWeight: medium,
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // }
+    
     return Scaffold(
-      backgroundColor:DarkColor.backgroundColor1,
-      resizeToAvoidBottomInset: false,
+      backgroundColor: DarkColor.backgroundColor1,
       body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: defaultMargin,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              emailInput(),
-              passwordInput(),
-              signInButton(),
-              Spacer(),
-            ],
+        child: Form(
+          key: _formKey,
+          child: Container(
+            height: MediaQuery.of(context).size.height - 20,
+            margin: EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  header(),
+                  emailInput(),
+                  passwordInput(),
+                  isLoading
+                      ? LoadingButton(
+                          text: "Loading",
+                          margin_top: 30.0,
+                          press: handleSignIn,
+                        )
+                      : PrimaryButton(
+                          text: "Sign In",
+                          margin_top: 30.0,
+                          press: handleSignIn,
+                        ),
+                ],
+              ),
+            ),
           ),
         ),
-      )
+      ),
     );
   }
-  void _login() async{
-    setState(() {
-      _isLoading = true;
-    });
-    var data = {
-      'email' : emailController,
-      'password' : passwordController
-    };
-
-    var res = await TokenServices.auth(data, '/token');
-    var body = json.decode(res.body);
-    if(body['success']){
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', json.encode(body['token']));
-      localStorage.setString('user', json.encode(body['user']));
-      Navigator.pushReplacement(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => MainPage()
-          ),
-      );
-    }else{
-      _showMsg(body['message']);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
 }
-
-
-  

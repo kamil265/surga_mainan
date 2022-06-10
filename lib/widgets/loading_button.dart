@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+import 'package:surga_mainan/theme/dark_color.dart';
+
+class LoadingButton extends StatelessWidget {
+  const LoadingButton({
+    Key key,
+    this.text,
+    this.press,
+    // ignore: non_constant_identifier_names
+    this.margin_top,
+  }) : super(key: key);
+  final String text;
+  // ignore: non_constant_identifier_names
+  final double margin_top;
+  final Function press;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      margin: EdgeInsets.only(top: margin_top),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          primary: Colors.white,
+          backgroundColor: DarkColor.primaryColor,
+        ),
+        onPressed: press as void Function(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 16.0,
+              height: 16.0,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation(DarkColor.primaryTextColor),
+              ),
+            ),
+            const SizedBox(
+              width: 4.0,
+            ),
+            Text(
+              text,
+              style: textStyle.primaryTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
